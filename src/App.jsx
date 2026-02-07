@@ -108,6 +108,7 @@ const App = () => {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const audioRef = useRef(null);
+  const wasMusicPlayingRef = useRef(false);
 
   const tracks = [
     { title: "Din Shagna Da", url: "/rishu-wedding/audio/din-shagna-da-x-kabira.mp3" },
@@ -167,6 +168,28 @@ const App = () => {
     }, 1000);
     return () => interval && clearInterval(interval);
   }, []);
+
+  // Stop music when page goes out of view, resume when back in view
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (isPlaying && audioRef.current) {
+          wasMusicPlayingRef.current = true;
+          audioRef.current.pause();
+          setIsPlaying(false);
+        }
+      } else {
+        if (wasMusicPlayingRef.current && audioRef.current && isOpen) {
+          wasMusicPlayingRef.current = false;
+          audioRef.current.play().catch(e => console.log("Auto-resume failed", e));
+          setIsPlaying(true);
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [isPlaying, isOpen]);
 
   const handleOpen = () => {
     setIsOpen(true);
@@ -343,7 +366,7 @@ const App = () => {
               <div className="flex flex-col items-center gap-2 mb-4">
                 <p className="text-[#8B0000] font-serif text-lg tracking-[0.2em] font-bold uppercase">Anurag family</p>
                 <div className="flex flex-col items-center opacity-90 mt-4 bg-white/30 backdrop-blur-sm p-4 rounded-3xl border border-yellow-600/10 shadow-sm relative overflow-hidden gold-sweep">
-                  <p className="text-red-800 text-[10px] uppercase tracking-[0.3em] font-sans font-semibold italic mb-1">In sacred memory of</p>
+                  <p className="text-red-800 text-[10px] uppercase tracking-[0.3em] font-sans font-semibold italic mb-1">In Loving Memory of</p>
                   <p className="text-[#8B0000] font-serif text-sm font-bold tracking-widest">Late Shri {weddingDetails.fatherName}</p>
                 </div>
                 <p className="font-script text-3xl text-red-800 mt-4 leading-tight">welcomes you to the wedding of</p>
