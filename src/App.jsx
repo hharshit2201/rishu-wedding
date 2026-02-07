@@ -110,10 +110,10 @@ const App = () => {
   const audioRef = useRef(null);
 
   const tracks = [
-    { title: "Din Shagna Da", url: "/audio/din-shagna-da-x-kabira.mp3" },
-    { title: "Chhaap Tilak", url: "/audio/Chhaap-Tilak.mp3" },
-    { title: "Tenu Leke", url: "/audio/Tenu-Leke.mp3" },
-    { title: "Mast Magan", url: "/audio/mast-magan.mp3" }
+    { title: "Din Shagna Da", url: "/rishu-wedding/audio/din-shagna-da-x-kabira.mp3" },
+    { title: "Chhaap Tilak", url: "/rishu-wedding/audio/Chhaap-Tilak.mp3" },
+    { title: "Tenu Leke", url: "/rishu-wedding/audio/Tenu-Leke.mp3" },
+    { title: "Mast Magan", url: "/rishu-wedding/audio/mast-magan.mp3" }
   ];
 
   const weddingDetails = {
@@ -204,7 +204,7 @@ const App = () => {
          </svg>
       </div>
 
-      <audio ref={audioRef} src={tracks[currentTrackIndex].url} preload="auto" />
+      <audio ref={audioRef} src={tracks[currentTrackIndex].url} preload="auto" crossOrigin="anonymous" />
 
       <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Great+Vibes&family=Montserrat:wght@100;400;700&family=Tiro+Devanagari+Hindi&display=swap');
