@@ -81,8 +81,20 @@ const useScrollReveal = () => {
 /**
  * Helper component for animated sections
  */
-const ScrollSection = ({ title, children, dark }) => {
+const ScrollSection = React.forwardRef(({ title, children, dark }, forwardedRef) => {
   const [ref, revealed] = useScrollReveal();
+
+  // Merge the internal ref and forwarded ref
+  React.useEffect(() => {
+    if (forwardedRef && ref.current) {
+      if (typeof forwardedRef === 'function') {
+        forwardedRef(ref.current);
+      } else {
+        forwardedRef.current = ref.current;
+      }
+    }
+  }, [forwardedRef, ref]);
+
   return (
     <section 
       ref={ref} 
@@ -100,7 +112,8 @@ const ScrollSection = ({ title, children, dark }) => {
       </div>
     </section>
   );
-};
+});
+ScrollSection.displayName = 'ScrollSection';
 
 const App = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -109,6 +122,7 @@ const App = () => {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const audioRef = useRef(null);
   const wasMusicPlayingRef = useRef(false);
+  const celebrationRef = useRef(null);
 
   const tracks = [
     { title: "Din Shagna Da", url: "/rishu-wedding/audio/din-shagna-da-x-kabira.mp3" },
@@ -364,7 +378,7 @@ const App = () => {
               </div>
 
               <div className="flex flex-col items-center gap-2 mb-4">
-                <p className="text-[#8B0000] font-serif text-lg tracking-[0.2em] font-bold uppercase">Anurag family</p>
+                <p className="text-[#8B0000] font-serif text-lg tracking-[0.2em] font-bold uppercase">Gupta family</p>
                 <div className="flex flex-col items-center opacity-90 mt-4 bg-white/30 backdrop-blur-sm p-4 rounded-3xl border border-yellow-600/10 shadow-sm relative overflow-hidden gold-sweep">
                   <p className="text-red-800 text-[10px] uppercase tracking-[0.3em] font-sans font-semibold italic mb-1">In Loving Memory of</p>
                   <p className="text-[#8B0000] font-serif text-sm font-bold tracking-widest">Late Shri {weddingDetails.fatherName}</p>
@@ -413,12 +427,15 @@ const App = () => {
               </div>
             </div>
 
-            <div className="mt-12 animate-bounce opacity-40">
+            <div 
+              className="mt-12 animate-bounce opacity-40 cursor-pointer hover:opacity-100 transition-opacity"
+              onClick={() => celebrationRef.current?.scrollIntoView({ behavior: 'smooth' })}
+            >
               <ChevronDown size={32} />
             </div>
           </section>
 
-          <ScrollSection title="Celebration Schedule">
+          <ScrollSection ref={celebrationRef} title="Celebration Schedule">
              <div className="flex flex-col gap-12 mt-12">
                 {weddingDetails.events.map((event, idx) => (
                   <div key={idx} className="bg-white/95 p-10 rounded-[2.5rem] border-b-4 border-yellow-600/10 shadow-xl relative overflow-hidden group active:scale-95 transition-transform">
@@ -442,7 +459,7 @@ const App = () => {
                 </p>
                 <p className="text-[10px] uppercase tracking-[0.6em] text-yellow-500 font-black font-sans mb-4 opacity-70">With Eager Hearts</p>
                 <div className="overflow-visible px-4 gold-sweep">
-                  <p className="text-4xl md:text-4xl font-script text-white shimmer-text whitespace-nowrap" style={{ padding: '1rem', overflow: 'visible', lineHeight: '1.5' }}>Shruti ♡ Rishu</p>
+                  <p className="text-4xl md:text-4xl font-script text-white shimmer-text whitespace-nowrap" style={{ padding: '1rem', overflow: 'visible', lineHeight: '1.5' }}>Rishu ♡ Shruti</p>
                 </div>
 
                 <div className="mt-20 pt-10 border-t border-yellow-600/20">
