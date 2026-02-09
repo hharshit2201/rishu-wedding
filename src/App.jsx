@@ -138,9 +138,9 @@ const App = () => {
     venue: "Sasaram",
     fatherName: "Ramesh Gupta", 
     events: [
-      { name: "Haldi", time: "11:00 AM", date: "March 5th", icon: "✨", venue: "Chanwar Takiya" },
+      { name: "Haldi", time: "06:00 PM", date: "March 5th", icon: "✨", venue: "Chanwar Takiya" },
       { name: "Mehendi & Sangeet", time: "08:00 PM", date: "March 6th", icon: "🎶", venue: "Chanwar Takiya" },
-      { name: "Wedding Ceremony", time: "07:00 PM", date: "March 7th", icon: "💍", venue: "Moments Resort" }
+      { name: "Wedding Ceremony", time: "07:00 PM", date: "March 7th", icon: "🤵❤️👰‍♀️", venue: "Moments Resort" }
     ]
   };
 
@@ -446,6 +446,7 @@ const App = () => {
                     <p className="font-bold text-red-800 text-lg mb-2">{event.date}</p>
                     <p className="italic text-base mb-6 opacity-70">Starts at {event.time}</p>
                     <p className="text-[10px] border-t border-red-50 pt-4 opacity-70 italic uppercase tracking-widest leading-relaxed">{event.venue}</p>
+                    <p className="text-[9px] opacity-60 italic uppercase tracking-widest mt-1">Sasaram</p>
                   </div>
                 ))}
               </div>
